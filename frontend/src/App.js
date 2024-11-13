@@ -6,6 +6,8 @@ axios.defaults.withCredentials = true;
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "XCSRF-TOKEN";
 
+var isEditing = false;
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +24,7 @@ class App extends Component {
   componentDidMount() {
     // Fetch CSRF token
     this.refreshList()
+    isEditing = false;
   }
 
   refreshList = () => {
@@ -33,13 +36,21 @@ class App extends Component {
 
   toggle = () => {
     this.setState({ modal: !this.state.modal });
+    isEditing = false;
   };
 
   handleSubmit = (item) => {
+    if (isEditing) {
+      axios
+        .put(`/api/chat/${item.id}/`, item)
+        .then((res) => this.refreshList());
+    }
+    else {
+      axios
+        .post("/api/chat/", item)
+        .then((res) => this.refreshList());
+    }
     this.toggle();
-    axios
-      .post("/api/chat/", item)
-      .then((res) => this.refreshList());
   };
 
   handleDelete = (item) => {
@@ -56,6 +67,7 @@ class App extends Component {
 
   editItem = (item) => {
     this.setState({ activeItem: item, modal: !this.state.modal });
+    isEditing = true;
   };
 
   renderItems = () => {

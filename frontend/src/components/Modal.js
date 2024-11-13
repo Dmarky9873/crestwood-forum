@@ -31,8 +31,19 @@ export default class CustomModal extends Component {
         this.setState({ activeItem });
     };
 
+
     render() {
         const { toggle, onSave } = this.props;
+
+        function authMessage(item) {
+            if (item.title == "") {
+                alert("Message title is blank")
+            } else if (item.body == "") {
+                alert("Message body is blank")
+            } else {
+                onSave(item)
+            }
+        }
 
         return (
             <Modal isOpen={true} toggle={toggle}>
@@ -66,7 +77,7 @@ export default class CustomModal extends Component {
                 <ModalFooter>
                     <Button
                         color="success"
-                        onClick={() => onSave(this.state.activeItem)}
+                        onClick={() => authMessage(this.state.activeItem)}
                     >
                         Save
                     </Button>
