@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Modal from "./components/Modal";
 import axios from "axios";
 import Cookies from "js-cookie";
-axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true;
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "XCSRF-TOKEN";
 
@@ -14,16 +14,16 @@ class App extends Component {
       modal: false,
       activeItem: {
         title: "",
-        description: "",
+        body: "",
       },
     };
   }
 
-
-
   componentDidMount() {
-    this.refreshList();
+    // Fetch CSRF token
+    this.refreshList()
   }
+
   refreshList = () => {
     axios
       .get("/api/chat/")
@@ -37,13 +37,6 @@ class App extends Component {
 
   handleSubmit = (item) => {
     this.toggle();
-
-    if (item.id) {
-      axios
-        .put(`/api/chat/${item.id}/`, item)
-        .then((res) => this.refreshList());
-      return;
-    }
     axios
       .post("/api/chat/", item)
       .then((res) => this.refreshList());
@@ -56,7 +49,7 @@ class App extends Component {
   };
 
   createItem = () => {
-    const item = { id: crypto.randomUUID(), title: "", description: "" };
+    const item = { id: crypto.randomUUID(), title: "", body: "" };
 
     this.setState({ activeItem: item, modal: !this.state.modal });
   };
@@ -65,9 +58,8 @@ class App extends Component {
     this.setState({ activeItem: item, modal: !this.state.modal });
   };
 
-
   renderItems = () => {
-    const newItems = this.state.messagesList
+    const newItems = this.state.messagesList;
 
     return newItems.map((item) => (
       <li
@@ -75,8 +67,7 @@ class App extends Component {
         className="list-group-item d-flex justify-content-between align-items-center"
       >
         <span
-          className={`title mr-2 : ""
-            }`}
+          className={`title mr-2 : ""}`}
         >
           {item.title}
         </span>

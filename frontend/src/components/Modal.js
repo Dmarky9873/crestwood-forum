@@ -51,11 +51,11 @@ export default class CustomModal extends Component {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="body">Description</Label>
+                            <Label for="body">Body</Label>
                             <Input
                                 type="text"
                                 id="body"
-                                name="description"
+                                name="body"
                                 value={this.state.activeItem.body}
                                 onChange={this.handleChange}
                                 placeholder="Enter Message Body"
