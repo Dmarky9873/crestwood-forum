@@ -36,9 +36,9 @@ export default class CustomModal extends Component {
         const { toggle, onSave } = this.props;
 
         function authMessage(item) {
-            if (item.title == "") {
+            if (item.title === "") {
                 alert("Message title is blank")
-            } else if (item.body == "") {
+            } else if (item.body === "") {
                 alert("Message body is blank")
             } else {
                 onSave(item)
