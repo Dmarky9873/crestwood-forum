@@ -44,7 +44,7 @@ class App extends Component {
 
   handleDelete = (item) => {
     axios
-      .delete(`/api/chat/${item.id}`)
+      .delete(`/api/chat/${item.id}/`)
       .then((res) => this.refreshList());
   };
 
