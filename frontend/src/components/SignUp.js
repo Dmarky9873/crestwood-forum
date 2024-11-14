@@ -41,9 +41,19 @@ class SignUp extends Component {
     };
 
     authMessage = () => {
-        console.log(this.state.activeUser)
-        axios
-            .post(this.state.activeUser)
+        if (this.state.activeUser.username === "") {
+            alert("Username is blank")
+        } else if (this.state.activeUser.password === "") {
+            alert("Password is blank")
+        } else if (this.state.activeUser.email === "") {
+            alert("Email is blank")
+        } else if (this.state.activeUser.firstName === "") {
+            alert("First Name is blank")
+        } else if (this.state.activeUser.lastName === "") {
+            alert("Last Name is blank")
+        } else {
+            console.log(this.state.activeUser)
+        }
     }
 
     render() {

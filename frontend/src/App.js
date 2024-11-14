@@ -5,7 +5,10 @@ import SignUp from "./components/SignUp";
 class App extends React.Component {
   render() {
     return (
-      <SignUp />
+      <div>
+        <SignUp />
+        <Forum />
+      </div>
     );
   }
 }
