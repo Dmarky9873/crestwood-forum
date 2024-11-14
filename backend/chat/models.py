@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Message(models.Model):
     id = models.UUIDField(primary_key=True)
     title = models.CharField(max_length=300)

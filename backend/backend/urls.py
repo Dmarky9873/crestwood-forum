@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from chat import views
+from user.views import UserView
+from chat.views import MessageView
 
 router = routers.DefaultRouter()
-router.register(r'chat', views.MessageView, 'chat')
+router.register(r'chat', MessageView, 'chat')
+router.register(r'user', UserView, 'user')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
