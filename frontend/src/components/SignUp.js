@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import {
     Button,
     Form,
@@ -31,8 +32,6 @@ class SignUp extends Component {
         this.createUser();
     }
 
-
-
     handleChange = (e) => {
         let { name, value } = e.target;
 
@@ -43,7 +42,8 @@ class SignUp extends Component {
 
     authMessage = () => {
         console.log(this.state.activeUser)
-        // post(this.state.activeUser)
+        axios
+            .post(this.state.activeUser)
     }
 
     render() {
