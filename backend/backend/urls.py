@@ -25,5 +25,5 @@ router.register(r'chat', views.MessageView, 'chat')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('chat/csrf-test/', views.csrf_test_view, name='csrf_test'),
+    # path('chat/csrf-test/', views.csrf_test_view, name='csrf_test'),
 ]
