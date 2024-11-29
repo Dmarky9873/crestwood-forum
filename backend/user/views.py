@@ -1,6 +1,7 @@
 # from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
+import json
 
 
 def login_user(request):
@@ -13,9 +14,17 @@ def login_user(request):
         JsonResponse: The response to the frontend on whether or not the user was successfully 
         logged in.
     """
-    username = request.POST["username"]
-    password = request.POST["password"]
+    try:
+        data = json.loads(request.body)
+        username = data.get("username")
+        password = data.get("password")
+    except json.JSONDecodeError:
+        return JsonResponse({"status": "error", "message": "Invalid JSON data"}, status=400)
+
+    print(username, password)
+
     user = authenticate(request, username=username, password=password)
+
     if user is not None:
         login(request, user)
         return JsonResponse({"status": "ok", "message": "Login successful"})

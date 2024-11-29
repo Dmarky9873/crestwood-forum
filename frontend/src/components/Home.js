@@ -16,11 +16,17 @@ class Home extends Component {
         this.setState({ redirectToMessaging: true });
     }
 
+    redirectLogin = () => {
+        this.setState({ redirectLogin: true });
+    }
+
     render() {
         if (this.state.redirectToSignup) {
             return <Navigate to="/signup" />;
         } else if (this.state.redirectToMessaging) {
             return <Navigate to="/messaging" />;
+        } else if (this.state.redirectLogin) {
+            return <Navigate to="/login" />;
         }
         return (
             <main className="container">
@@ -36,6 +42,12 @@ class Home extends Component {
                     onClick={this.redirectMessaging}
                 >
                     Messaging
+                </button>
+                <button
+                    className="btn btn-primary"
+                    onClick={this.redirectLogin}
+                >
+                    Log In
                 </button>
 
             </main >
