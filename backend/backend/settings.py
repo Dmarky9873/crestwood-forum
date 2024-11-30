@@ -134,14 +134,11 @@ CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:8000',
 ]
 
-CSRF_COOKIE_NAME = "XCSRF-TOKEN"
-
-
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
-    'http://127.0.0.1:8000/'
+    'http://127.0.0.1:8000'
 ]
 
-CORS_ALLOW_CREDENTIALS = False
+CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = "user.CustomUser"

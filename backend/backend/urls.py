@@ -17,8 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from user.views import login_user
 from chat.views import MessageView
+from user.views import api_login
 
 router = routers.DefaultRouter()
 router.register(r'chat', MessageView, 'chat')
@@ -28,5 +28,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     # path('chat/csrf-test/', views.csrf_test_view, name='csrf_test'),
-    path('authenticate-login/', login_user, name='login'),
+    path('accounts/login/', api_login, name='api_login'),
 ]

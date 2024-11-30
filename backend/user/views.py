@@ -1,32 +1,41 @@
-# from django.shortcuts import render
+"""
+
+    By: Daniel Markusson
+
+
+"""
+
+import json
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-import json
+from django.views.decorators.csrf import csrf_exempt
 
 
-def login_user(request):
-    """ Logs in a user from a POST request.
+@csrf_exempt  # Temporarily disable CSRF for this view
+def api_login(request: object) -> object:
+    """ Log in a user using the REST API.
 
     Args:
-        request (any): The request object that contains the user's login information.
+        request (object): The request object including a username, password, and CSRF token.
 
     Returns:
-        JsonResponse: The response to the frontend on whether or not the user was successfully 
-        logged in.
+        object: Returns a JSON response with a success or error message.
     """
-    try:
-        data = json.loads(request.body)
-        username = data.get("username")
-        password = data.get("password")
-    except json.JSONDecodeError:
-        return JsonResponse({"status": "error", "message": "Invalid JSON data"}, status=400)
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            password = data.get("password")
+            username = data.get("username")
 
-    print(username, password)
+            user = authenticate(username=username,
+                                password=password)
+            if user is not None:
+                login(request, user)
+                return JsonResponse({"message": "Login successful!"}, status=200)
 
-    user = authenticate(request, username=username, password=password)
+            return JsonResponse({"error": "Invalid credentials."}, status=401)
 
-    if user is not None:
-        login(request, user)
-        return JsonResponse({"status": "ok", "message": "Login successful"})
+        except json.JSONDecodeError as e:
+            return JsonResponse({"error": str(e)}, status=400)
 
-    return JsonResponse({"status": "error", "message": "Invalid credentials"}, status=401)
+    return JsonResponse({"error": "Only POST requests are allowed."}, status=405)

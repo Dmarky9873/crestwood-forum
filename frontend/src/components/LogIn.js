@@ -43,7 +43,7 @@ class SignUp extends Component {
             alert("Password is blank")
         } else {
             console.log(this.state.activeUser)
-            axios.post("/authenticate-login/", this.state.activeUser)
+            axios.post("/login/", this.state.activeUser)
                 .then((res) => {
                     if (res.data === "Success") {
                         alert("Success")
