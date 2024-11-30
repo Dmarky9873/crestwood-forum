@@ -36,21 +36,34 @@ class SignUp extends Component {
         this.setState({ activeUser: user });
     };
 
-    authMessage = () => {
+    signIn = () => {
         if (this.state.activeUser.username === "") {
             alert("Username is blank")
         } else if (this.state.activeUser.password === "") {
             alert("Password is blank")
         } else {
-            console.log(this.state.activeUser)
-            axios.post("/login/", this.state.activeUser)
+            axios.post("/accounts/login/", this.state.activeUser)
                 .then((res) => {
-                    if (res.data === "Success") {
-                        alert("Success")
-                    } else {
-                        alert("Failure")
+                    if (res.status === 200) {
+                        alert("Signed in");
                     }
                 })
+                .catch((error) => {
+                    if (error.response) {
+                        if (error.response.status === 401) {
+                            alert("Wrong username or password.");
+                        } else {
+                            alert(`Error: ${error.response.status} - ${error.response.data.error}`);
+                        }
+                    } else if (error.request) {
+                        // No response was received
+                        alert("No response from the server. Please try again later.");
+                    } else {
+                        // Error setting up the request
+                        alert(`Error: ${error.message}`);
+                    }
+                });
+
         }
     }
 
@@ -82,7 +95,7 @@ class SignUp extends Component {
                 </Form>
                 <Button
                     color="success"
-                    onClick={this.authMessage}
+                    onClick={this.signIn}
                 >
                     Save
                 </Button>

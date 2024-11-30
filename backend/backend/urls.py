@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework import routers
 from chat.views import MessageView
 from user.views import api_login
+from user.views import get_username
 
 router = routers.DefaultRouter()
 router.register(r'chat', MessageView, 'chat')
@@ -27,6 +28,6 @@ router.register(r'chat', MessageView, 'chat')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    # path('chat/csrf-test/', views.csrf_test_view, name='csrf_test'),
     path('accounts/login/', api_login, name='api_login'),
+    path('accounts/api/username/', get_username, name='get_username'),
 ]

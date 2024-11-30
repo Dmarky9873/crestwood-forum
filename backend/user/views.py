@@ -9,6 +9,7 @@ import json
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 
 @csrf_exempt  # Temporarily disable CSRF for this view
@@ -39,3 +40,19 @@ def api_login(request: object) -> object:
             return JsonResponse({"error": str(e)}, status=400)
 
     return JsonResponse({"error": "Only POST requests are allowed."}, status=405)
+
+
+@login_required
+def get_username(request: object) -> object:
+    """ Get the username of the currently logged in user.
+
+    Args:
+        request (object): The request object including a CSRF token.
+
+    Returns:
+        object: Returns a JSON response with the username of the currently logged in user.
+    """
+    if request.method == "GET":
+        return JsonResponse({"username": request.user.username}, status=200)
+
+    return JsonResponse({"error": "Only GET requests are allowed."}, status=405)
