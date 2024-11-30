@@ -43,16 +43,18 @@ def api_login(request: object) -> object:
 
 
 @login_required
-def get_username(request: object) -> object:
-    """ Get the username of the currently logged in user.
-
-    Args:
-        request (object): The request object including a CSRF token.
-
-    Returns:
-        object: Returns a JSON response with the username of the currently logged in user.
-    """
+def get_user_attribute(request, attribute):
     if request.method == "GET":
-        return JsonResponse({"username": request.user.username}, status=200)
+        user = request.user
 
+        print(user.first_name)
+        print(attribute)
+        print(getattr(user, attribute))
+
+        allowed_attributes = ["username", "first_name", "last_name", "email"]
+
+        if attribute in allowed_attributes:
+            return JsonResponse({attribute: getattr(user, attribute)}, status=200)
+
+        return JsonResponse({"error": "Invalid attribute."}, status=400)
     return JsonResponse({"error": "Only GET requests are allowed."}, status=405)

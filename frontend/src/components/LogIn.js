@@ -7,6 +7,8 @@ import {
     Input,
     Label,
 } from "reactstrap";
+import { Navigate } from 'react-router-dom';
+
 
 class SignUp extends Component {
     constructor(props) {
@@ -15,6 +17,7 @@ class SignUp extends Component {
             activeUser: {
                 username: "",
                 password: "",
+                isSignedIn: false,
             },
         };
     }
@@ -46,6 +49,7 @@ class SignUp extends Component {
                 .then((res) => {
                     if (res.status === 200) {
                         alert("Signed in");
+                        this.setState({ isSignedIn: true });
                     }
                 })
                 .catch((error) => {
@@ -68,6 +72,9 @@ class SignUp extends Component {
     }
 
     render() {
+        if (this.state.isSignedIn) {
+            return <Navigate to="/" />;
+        }
         return (
             <main className="container">
                 <h1 className="text-white text-uppercase text-center my-4">SignUp</h1>

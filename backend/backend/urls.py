@@ -18,8 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from chat.views import MessageView
-from user.views import api_login
-from user.views import get_username
+from user.views import api_login, get_user_attribute
 
 router = routers.DefaultRouter()
 router.register(r'chat', MessageView, 'chat')
@@ -29,5 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('accounts/login/', api_login, name='api_login'),
-    path('accounts/api/username/', get_username, name='get_username'),
+    path('accounts/api/<str:attribute>/',
+         get_user_attribute, name='get_user_attribute'),
 ]

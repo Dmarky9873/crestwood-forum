@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Navigate, redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 
 class Home extends Component {
     state = {
         redirectToSignup: false,
         redirectToMessaging: false,
+        first_name: "",
         username: "",
     };
 
@@ -32,8 +33,16 @@ class Home extends Component {
             });
     }
 
+    getUserAttr = (attr) => {
+        axios.get(`/accounts/api/${attr}/`).then((response) => {
+            this.setState({ [attr]: response.data[attr] });
+        }).catch((error) => {
+            console.error(`Error fetching ${attr}:`, error);
+        });
+    }
+
     componentDidMount() {
-        this.getUsername();
+        this.setState({ firstName: this.getUserAttr("first_name") });
     }
 
     render() {
@@ -47,7 +56,7 @@ class Home extends Component {
         return (
             <main className="container">
                 <h1 className="text-uppercase text-center my-4">Crestwood-Forum Home</h1>
-                <h2 className="text-uppercase text-center my-4">Welcome, {this.state.username}</h2>
+                <h2 className="text-uppercase text-center my-4">Welcome, {this.state.first_name}</h2>
                 <button
                     className="btn btn-primary"
                     onClick={this.nav}
