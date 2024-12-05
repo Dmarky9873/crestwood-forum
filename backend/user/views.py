@@ -47,10 +47,6 @@ def get_user_attribute(request, attribute):
     if request.method == "GET":
         user = request.user
 
-        print(user.first_name)
-        print(attribute)
-        print(getattr(user, attribute))
-
         allowed_attributes = ["username", "first_name", "last_name", "email"]
 
         if attribute in allowed_attributes:

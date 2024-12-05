@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import Modal from "./Modal";
 import axios from "axios";
-axios.defaults.withCredentials = true;
-axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-axios.defaults.xsrfCookieName = "XCSRF-TOKEN";
 
 var isEditing = false;
 
@@ -21,7 +18,6 @@ class Forum extends Component {
     }
 
     componentDidMount() {
-        // Fetch CSRF token
         this.refreshList()
         isEditing = false;
     }
@@ -30,6 +26,10 @@ class Forum extends Component {
         axios
             .get("/api/chat/")
             .then((res) => this.setState({ messagesList: res.data }))
+            .catch((err) => console.log(err));
+        axios
+            .get("/api/chat/")
+            .then((res) => console.log(res))
             .catch((err) => console.log(err));
     }
 
@@ -59,9 +59,13 @@ class Forum extends Component {
     };
 
     createItem = () => {
-        const item = { id: crypto.randomUUID(), title: "", body: "" };
+        var username = "Username not found";
+        axios.get("/accounts/api/username/").then((res) => {
+            username = res.data.username;
+            const item = { author: username, id: crypto.randomUUID(), title: "", body: "" };
 
-        this.setState({ activeItem: item, modal: !this.state.modal });
+            this.setState({ activeItem: item, modal: !this.state.modal });
+        });
     };
 
     editItem = (item) => {
@@ -77,11 +81,16 @@ class Forum extends Component {
                 key={item.id}
                 className="list-group-item d-flex justify-content-between align-items-center"
             >
+                <span className={`title`}>
+                    {item.author} says:
+                </span>
                 <span
                     className={`title mr-2 : ""}`}
                 >
-                    {item.title}
+                    Title: {item.title}
                 </span>
+                <br />
+                <span className={`title mr-2 : ""}`}>{item.body}</span>
                 <span>
                     <button
                         className="btn btn-secondary mr-2"
@@ -95,8 +104,9 @@ class Forum extends Component {
                     >
                         Delete
                     </button>
+
                 </span>
-            </li>
+            </li >
         ));
     };
 
